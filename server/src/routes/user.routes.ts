@@ -36,6 +36,7 @@ app.post('/register', async (req, res) => {
 })
 
 app.post('/login', async (req, res) => {
+	// console.log(jwt.verify('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiaGVsbG8iLCJpYXQiOjE1OTg2NDY4NTMsImV4cCI6MTU5OTI1MTY1M30.LQyP5BpeXy7ifQ5UHDZDlcv4IEO0wjtUJ6ISILo2bVA','secret'))
 	// console.log(await bcrypt.compare('req.body.password','$2b$10$VtxJZdfSDEjQFF9TnCQyKOq7OFucwY7bpYWV45xfXMDNf.tMBzm6q'))
 	try {
 		if (req.body.user) {
