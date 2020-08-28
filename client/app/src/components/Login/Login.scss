@@ -5,10 +5,14 @@
 	align-items: center;
 	.Card {
 		width: 80%;
-		max-width: 400px;
+		max-width: 20rem;
+		min-width: 10rem;
 		background-color: white;
 		border-radius: 8px;
 		color: black;
-		padding: 20px;
+		padding: 1rem;
+		@media screen and (max-width: 17.5rem) {
+			padding: 0.5rem;
+		}
 	}
 }
