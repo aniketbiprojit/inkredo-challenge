@@ -5,8 +5,10 @@ import net from 'net'
 import http from 'http'
 import https from 'https'
 
+import { Routes } from './routes/index'
 import Console from './helpers/Console'
 
+// /'./models'
 require('./models')
 
 interface AppInterface {
@@ -57,6 +59,7 @@ class App extends AbstractApp {
 		super()
 
 		this.defaultMiddlewares()
+		this.connectRoutes()
 		Console.log(`${name} was initialized on port ${this.port}.`)
 	}
 
@@ -74,6 +77,11 @@ class App extends AbstractApp {
 		this.app.get('/inkredo-challenge*', (req, res) => {
 			res.sendFile(path.join(__dirname + '/../../client/app/build/index.html'))
 		})
+	}
+
+	protected connectRoutes(): void {
+		this.app.get('/api', (req, res) => res.send('ok'))
+		this.app.use('/api', Routes)
 	}
 
 	/**
