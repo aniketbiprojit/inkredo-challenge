@@ -6,3 +6,17 @@
 	color: #61dafb;
 	font-size: 20px;
 }
+.Home {
+	h1 {
+		text-align: center;
+	}
+	.company-wrapper {
+		background-color: white;
+		color: #282c34;
+		border-radius: 0.25rem;
+		width: 20rem;
+		margin: 1rem auto;
+		padding: 1.2rem 1rem;
+		cursor: pointer;
+	}
+}
