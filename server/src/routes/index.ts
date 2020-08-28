@@ -1,6 +1,7 @@
 import express from 'express'
-const User = require('../models/index').User
+
 const jwt = require('jsonwebtoken')
+const { User, Company } = require('../models')
 
 const app = express.Router()
 
@@ -22,5 +23,11 @@ let verify = async (req: express.Request, res: express.Response, next: any) => {
 app.post('/verify', verify, (req, res) => {
 	res.send()
 })
+
+app.post('/company/get_all', async (req, res) => {
+	const companies = await Company.find({}, 'company_name _id').sort({ company_name: 1 })
+	res.send(companies)
+})
+app.use('/company', verify, require('./company.routes'))
 
 export let Routes: express.IRouter = app

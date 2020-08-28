@@ -6,6 +6,8 @@ import Login from './Auth/Login'
 import Register from './Auth/Register'
 import Company from './Company'
 import CreateCompany from './Auth/Create Company'
+import Axios from 'axios'
+import { options } from './config'
 
 interface elem {
 	_id: string
@@ -28,6 +30,11 @@ class App extends Component<PropsType, AppState> {
 			{ company_name: 'Adobe', _id: 'e84012934' },
 			{ company_name: 'Apple', _id: 'e132123' },
 		],
+	}
+
+	async componentDidMount() {
+		let result = await Axios.post(options.link + 'company/get_all')
+		this.setState({ companies: result.data })
 	}
 	render() {
 		return (

@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react'
 import './Auth.scss'
 
-import { RouteComponentProps, Link } from 'react-router-dom'
+import { RouteComponentProps } from 'react-router-dom'
 import { options } from '../config'
 
 import axios from 'axios'
@@ -25,7 +25,7 @@ class CreateCompany extends Component<ICreateCompanyProps, ICreateCompanyState> 
 
 	async handleSubmit() {
 		try {
-			let result = await axios.post(options.link + 'create/company', {
+			let result = await axios.post(options.link + 'company/create', {
 				company_name: this.state.company_name,
 				auth: {
 					token: localStorage.getItem('token'),
@@ -33,9 +33,7 @@ class CreateCompany extends Component<ICreateCompanyProps, ICreateCompanyState> 
 				},
 			})
 			if (result.status === 200) {
-				let data = result.data
-				localStorage.setItem('token', data.token)
-				localStorage.setItem('username', data.username)
+				this.props.history.push('/company/' + this.state.company_name, '/')
 			}
 		} catch (err) {
 			if (err.response) {
