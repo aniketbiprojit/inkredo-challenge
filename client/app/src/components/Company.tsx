@@ -23,13 +23,13 @@ export default class Company extends React.Component<ICompanyProps, ICompanyStat
 		let name: string = (this.props.match?.params?.id as string) || ''
 		this.setState({ company_name: name }, async () => {
 			let result = await Axios.post(options.link + 'company/' + this.state.company_name, {})
-			let past = this.state.past
+			let past = []
 			for (let index = 0; index < result.data.past.length; index++) {
 				const element = result.data.past[index]
 
 				past.push(element.user.username)
 			}
-			let present = this.state.present
+			let present = []
 			for (let index = 0; index < result.data.present.length; index++) {
 				const element = result.data.present[index]
 
@@ -45,16 +45,18 @@ export default class Company extends React.Component<ICompanyProps, ICompanyStat
 			<Fragment>
 				<div className='App'>
 					<h1>{this.state.company_name}</h1>
-
-					<h3>Past</h3>
+					<h3>Past</h3>[
 					{this.state.past.map((elem) => {
-						return <Fragment>{elem}</Fragment>
+						return <Fragment>{elem}, </Fragment>
 					})}
-
-					<h3>Present</h3>
+					]
+					<br />
+					<br />
+					<h3>Present</h3>[
 					{this.state.past.map((elem) => {
-						return <Fragment>{elem}</Fragment>
+						return <Fragment>{elem}, </Fragment>
 					})}
+					]
 				</div>
 			</Fragment>
 		)
