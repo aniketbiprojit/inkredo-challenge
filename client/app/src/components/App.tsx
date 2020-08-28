@@ -36,6 +36,19 @@ class App extends Component<PropsType, AppState> {
 		let result = await Axios.post(options.link + 'company/get_all')
 		this.setState({ companies: result.data })
 	}
+
+	async join(company_name: string) {
+		let result = await Axios.post(options.link + 'relation/join', {
+			company_name: company_name,
+			auth: {
+				token: localStorage.getItem('token'),
+				username: localStorage.getItem('username'),
+			},
+		})
+		if (result.status === 200) {
+			alert('joined')
+		}
+	}
 	render() {
 		return (
 			<Fragment>
@@ -49,11 +62,16 @@ class App extends Component<PropsType, AppState> {
 						{this.state.companies.map((elem) => {
 							return (
 								<Fragment key={elem._id}>
-									<Link to={'/company/' + elem.company_name}>
-										<div className='company-wrapper'>
+									<div className='company-wrapper'>
+										<Link to={'/company/' + elem.company_name}>
 											<h3> {elem.company_name}</h3>
-										</div>
-									</Link>
+										</Link>
+										<input
+											onClick={() => this.join(elem.company_name)}
+											type='button'
+											value='Join'
+										/>
+									</div>
 								</Fragment>
 							)
 						})}

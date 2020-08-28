@@ -30,4 +30,6 @@ app.post('/company/get_all', async (req, res) => {
 })
 app.use('/company', verify, require('./company.routes'))
 
+app.use('/relation', verify, require('./relation.routes'))
+
 export let Routes: express.IRouter = app
