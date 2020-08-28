@@ -6,6 +6,7 @@ import { RouteComponentProps, Link } from 'react-router-dom'
 import { options } from '../config'
 
 import axios from 'axios'
+import auth from './auth'
 
 interface IRegisterProps extends RouteComponentProps {
 	name: string
@@ -20,7 +21,11 @@ interface IRegisterState {
 
 class Register extends Component<IRegisterProps, IRegisterState> {
 	state = { username: '', password: '', err: '', email: '' }
-	componentDidMount() {}
+	async componentDidMount() {
+		if (await auth()) {
+			this.props.history.push('/', '/')
+		}
+	}
 	async handleSubmit() {
 		try {
 			let result = await axios.post(options.link + 'user/register', {

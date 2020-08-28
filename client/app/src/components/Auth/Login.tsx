@@ -5,6 +5,7 @@ import { RouteComponentProps, Link } from 'react-router-dom'
 import { options } from '../config'
 
 import axios from 'axios'
+import auth from './auth'
 
 interface ILoginProps extends RouteComponentProps {}
 
@@ -16,6 +17,13 @@ interface ILoginState {
 
 class Login extends Component<ILoginProps, ILoginState> {
 	state = { username: '', password: '', err: '' }
+
+	async componentDidMount() {
+		if (await auth()) {
+			this.props.history.push('/', '/')
+		}
+	}
+
 	async handleSubmit() {
 		try {
 			let result = await axios.post(options.link + 'user/login', {
