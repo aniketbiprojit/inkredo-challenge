@@ -7,7 +7,7 @@ import https from 'https'
 
 import Console from './helpers/Console'
 
-require('./models/index.ts')
+require('./models')
 
 interface AppInterface {
 	app: express.Application
