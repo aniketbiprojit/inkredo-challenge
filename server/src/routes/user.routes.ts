@@ -1,5 +1,5 @@
 import express from 'express'
-import bcrypt from 'bcrypt'
+import bcrypt, { compareSync } from 'bcrypt'
 
 const { User, Company } = require('../models')
 
@@ -8,11 +8,13 @@ const jwt = require('jsonwebtoken')
 const app = express.Router()
 
 app.post('/register', async (req, res) => {
+	// console.log(req.body)
 	// console.log(await bcrypt.hash('req.body.password', 10))
+	// return
 	try {
 		if (req.body.user) {
 			if (req.body.user.username && req.body.user.password && req.body.user.email) {
-				req.body.password = await bcrypt.hash(req.body.password, 10)
+				req.body.password = await bcrypt.hash(req.body.user.password, 10)
 				let user = new User(req.body.user)
 				await user.save()
 
@@ -38,10 +40,15 @@ app.post('/register', async (req, res) => {
 app.post('/login', async (req, res) => {
 	// console.log(jwt.verify('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiaGVsbG8iLCJpYXQiOjE1OTg2NDY4NTMsImV4cCI6MTU5OTI1MTY1M30.LQyP5BpeXy7ifQ5UHDZDlcv4IEO0wjtUJ6ISILo2bVA','secret'))
 	// console.log(await bcrypt.compare('req.body.password','$2b$10$VtxJZdfSDEjQFF9TnCQyKOq7OFucwY7bpYWV45xfXMDNf.tMBzm6q'))
+	console.log(req.body)
 	try {
 		if (req.body.user) {
 			if (req.body.user.username && req.body.user.password) {
 				let user = await User.findOne({ username: req.body.username })
+				if (user === null) {
+					res.status(400).send('User does not exist.')
+					return
+				}
 				let pass = await bcrypt.compare(req.body.password, user.password)
 				if (pass) {
 					let token = jwt.sign({ email: req.body.username }, 'secret', { expiresIn: '7d' })
