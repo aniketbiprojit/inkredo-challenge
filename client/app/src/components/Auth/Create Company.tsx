@@ -7,36 +7,35 @@ import { options } from '../config'
 import axios from 'axios'
 import auth from './auth'
 
-interface ILoginProps extends RouteComponentProps {}
+interface ICreateCompanyProps extends RouteComponentProps {}
 
-interface ILoginState {
-	username: string
-	password: string
+interface ICreateCompanyState {
+	company_name: string
 	err: string
 }
 
-class Login extends Component<ILoginProps, ILoginState> {
-	state = { username: '', password: '', err: '' }
+class CreateCompany extends Component<ICreateCompanyProps, ICreateCompanyState> {
+	state = { company_name: '', err: '' }
 
 	async componentDidMount() {
-		if (await auth()) {
+		if (!(await auth())) {
 			this.props.history.push('/', '/')
 		}
 	}
 
 	async handleSubmit() {
 		try {
-			let result = await axios.post(options.link + 'user/login', {
-				user: {
-					username: this.state.username,
-					password: this.state.password,
+			let result = await axios.post(options.link + 'create/company', {
+				company_name: this.state.company_name,
+				auth: {
+					token: localStorage.getItem('token'),
+					username: localStorage.getItem('username'),
 				},
 			})
 			if (result.status === 200) {
 				let data = result.data
 				localStorage.setItem('token', data.token)
 				localStorage.setItem('username', data.username)
-				this.props.history.push('/', '/')
 			}
 		} catch (err) {
 			if (err.response) {
@@ -50,9 +49,9 @@ class Login extends Component<ILoginProps, ILoginState> {
 	render() {
 		return (
 			<Fragment>
-				<div className='App Login'>
+				<div className='App Login CreateCompany'>
 					<div className='Card'>
-						<h1 style={{ textAlign: 'center' }}>Login</h1>
+						<h1 style={{ textAlign: 'center' }}>Create Company</h1>
 						<form
 							onSubmit={(e) => {
 								e.preventDefault()
@@ -63,28 +62,14 @@ class Login extends Component<ILoginProps, ILoginState> {
 							<div className='input-wrapper'>
 								<input
 									type='text'
-									name='username'
-									value={this.state.username}
+									name='company_name'
+									value={this.state.company_name}
 									onChange={(e) => {
-										this.setState({ username: e.target.value })
+										this.setState({ company_name: e.target.value })
 									}}
-									placeholder='Enter username.'
+									placeholder='Enter your company name.'
 								/>
 							</div>
-							<div className='input-wrapper'>
-								<input
-									type='password'
-									name='password'
-									value={this.state.password}
-									onChange={(e) => {
-										this.setState({ password: e.target.value })
-									}}
-									placeholder='Enter your password.'
-								/>
-							</div>
-							<Link to='/register'>
-								<p className='shift'>Register?</p>
-							</Link>
 							<div className='input-wrapper submit'>
 								<input type='submit' value='Submit' />
 							</div>
@@ -96,4 +81,4 @@ class Login extends Component<ILoginProps, ILoginState> {
 	}
 }
 
-export default Login
+export default CreateCompany

@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Route, Switch, RouteChildrenProps, Link } from
 import Login from './Auth/Login'
 import Register from './Auth/Register'
 import Company from './Company'
+import CreateCompany from './Auth/Create Company'
 
 interface elem {
 	_id: string
@@ -33,7 +34,9 @@ class App extends Component<PropsType, AppState> {
 			<Fragment>
 				<div className='App Home'>
 					<div className='container'>
-						<input type='button' value='Create Company' />
+						<Link to='/create/company'>
+							<input type='button' value='Create Company' />
+						</Link>
 						<input type='button' value='My Dashboard' />
 						<h1>Companies</h1>
 						{this.state.companies.map((elem) => {
@@ -60,6 +63,7 @@ class RouterWrapper extends Component {
 			<Fragment>
 				<Router basename='/inkredo-challenge'>
 					<Switch>
+						<Route path='/create/company' component={CreateCompany}></Route>
 						<Route path='/company/:id' component={Company}></Route>
 						<Route path='/register' component={Register}></Route>
 						<Route path='/login' component={Login}></Route>
