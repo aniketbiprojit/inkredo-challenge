@@ -1,0 +1,14 @@
+.Login {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	align-items: center;
+	.Card {
+		width: 80%;
+		max-width: 400px;
+		background-color: white;
+		border-radius: 8px;
+		color: black;
+		padding: 20px;
+	}
+}

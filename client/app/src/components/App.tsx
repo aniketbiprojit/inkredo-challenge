@@ -1,23 +1,12 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import './App.scss'
 
-/**
- * @typedef State
- * @state {Date} date
- */
-interface AppState {
-	data: Date
-}
+import { BrowserRouter as Router, Route, Switch, RouteChildrenProps } from 'react-router-dom'
+import Login from './Login/Login'
 
-/**
- * @typedef Props
- * @prop {React.ReactNode} children
- * @prop {React.ReactNode} name
- */
-interface PropsType {
-	children?: JSX.Element[] | JSX.Element
-	name?: string
-}
+interface AppState {}
+
+interface PropsType extends RouteChildrenProps {}
 
 class App extends Component<PropsType, AppState> {
 	static defaultProps = {
@@ -26,20 +15,27 @@ class App extends Component<PropsType, AppState> {
 
 	constructor(props: PropsType) {
 		super(props)
-
-		this.setState({
-			data: new Date(),
-		})
+		console.log('mounted, from app')
 	}
 
 	render() {
+		return <Fragment>HomePage</Fragment>
+	}
+}
+
+class RouterWrapper extends Component {
+	render() {
 		return (
-			<div className='App'>
-				{this.props.name}
-				{this.props.children}
-			</div>
+			<Fragment>
+				<Router basename='/inkredo-challenge'>
+					<Switch>
+						<Route path='/login' component={Login}></Route>
+						<Route path='/' exact component={App}></Route>
+					</Switch>
+				</Router>
+			</Fragment>
 		)
 	}
 }
 
-export default App
+export default RouterWrapper
