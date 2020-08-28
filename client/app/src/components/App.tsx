@@ -2,7 +2,8 @@ import React, { Component, Fragment } from 'react'
 import './App.scss'
 
 import { BrowserRouter as Router, Route, Switch, RouteChildrenProps } from 'react-router-dom'
-import Login from './Login/Login'
+import Login from './Auth/Login'
+import Register from './Auth/Register'
 
 interface AppState {}
 
@@ -29,6 +30,7 @@ class RouterWrapper extends Component {
 			<Fragment>
 				<Router basename='/inkredo-challenge'>
 					<Switch>
+						<Route path='/register' component={Register}></Route>
 						<Route path='/login' component={Login}></Route>
 						<Route path='/' exact component={App}></Route>
 					</Switch>

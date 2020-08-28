@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react'
-import './Login.scss'
+import './Auth.scss'
 
-import { RouteComponentProps } from 'react-router-dom'
+import { RouteComponentProps, Link } from 'react-router-dom'
 
 interface ILoginProps extends RouteComponentProps {
 	name: string
@@ -25,7 +25,9 @@ class Login extends Component<ILoginProps, ILoginState> {
 							<div className='input-wrapper'>
 								<input type='password' name='password' placeholder='Enter your password.' />
 							</div>
-
+							<Link to='/register'>
+								<p className='shift'>Register?</p>
+							</Link>
 							<div className='input-wrapper submit'>
 								<input type='submit' value='Submit' />
 							</div>
