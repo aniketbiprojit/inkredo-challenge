@@ -1,7 +1,7 @@
-import express from 'express'
+import express, { response } from 'express'
 
 const jwt = require('jsonwebtoken')
-const { User, Company } = require('../models')
+const { User, Company, Relation } = require('../models')
 
 const app = express.Router()
 
@@ -28,7 +28,21 @@ app.post('/company/get_all', async (req, res) => {
 	const companies = await Company.find({}, 'company_name _id').sort({ company_name: 1 })
 	res.send(companies)
 })
-app.use('/company', verify, require('./company.routes'))
+
+app.post('/company/:name', async (req, res) => {
+	console.log(req.params)
+	const company = await Company.findOne({ company_name: req.params.name })
+
+	const present = await Relation.find({ present: true, company: company }, '_id').populate('user')
+	const past = await Relation.find({ present: false, company: company }, '_id').populate('user')
+	const response = {
+		present: present,
+		past: past,
+	}
+	res.send(response)
+})
+
+app.use('/company/', verify, require('./company.routes'))
 
 app.use('/relation', verify, require('./relation.routes'))
 

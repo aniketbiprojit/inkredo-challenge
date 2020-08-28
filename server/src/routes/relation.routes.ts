@@ -10,7 +10,9 @@ app.post('/join', async (req, res) => {
 			let rel = new Relation()
 			let company = await Company.findOne({ company_name: req.body.company_name })
 			let user = await User.findOne({ username: req.body.auth.username })
-			console.log(user)
+
+			console.log(user, company)
+
 			if (user.current) {
 				let current = await Relation.findById(user.current)
 				current.present = false
@@ -20,6 +22,7 @@ app.post('/join', async (req, res) => {
 			rel.user = user._id
 
 			await rel.save()
+			console.log(rel)
 			user.current = rel._id
 			await user.save()
 
