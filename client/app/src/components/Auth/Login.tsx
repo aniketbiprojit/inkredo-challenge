@@ -25,6 +25,9 @@ class Login extends Component<ILoginProps, ILoginState> {
 				},
 			})
 			if (result.status === 200) {
+				let data = result.data
+				localStorage.setItem('token', data.token)
+				localStorage.setItem('username', data.username)
 			}
 		} catch (err) {
 			if (err.response) {

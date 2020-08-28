@@ -22,7 +22,7 @@ app.post('/register', async (req, res) => {
 					res.status(400).send('Email exists.')
 					return
 				}
-				req.body.password = await bcrypt.hash(req.body.user.password, 10)
+				req.body.user.password = await bcrypt.hash(req.body.user.password, 10)
 				let user = new User(req.body.user)
 				await user.save()
 				console.log(user)
