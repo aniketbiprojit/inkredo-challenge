@@ -5,7 +5,7 @@
 	align-items: center;
 	.Card {
 		width: 80%;
-		max-width: 20rem;
+		max-width: 30rem;
 		min-width: 10rem;
 		background-color: white;
 		border-radius: 8px;
@@ -13,6 +13,41 @@
 		padding: 1rem;
 		@media screen and (max-width: 17.5rem) {
 			padding: 0.5rem;
+		}
+		.input-wrapper {
+			padding: 0.5rem 0;
+			width: 100%;
+			max-width: 28rem;
+			input[type='text'],
+			input[type='email'],
+			input[type='password'] {
+				width: calc(100% - 0.25rem);
+				max-width: 28rem;
+				border: none;
+				padding: 0.5rem 0.25rem;
+			}
+
+			input[type='text']:focus,
+			input[type='email']:focus,
+			input[type='password']:focus,
+			input[type='submit'] {
+				outline: none;
+			}
+		}
+		.input-wrapper.submit {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			align-items: center;
+			input {
+				background-color: #282c34;
+				border: none;
+				color: white;
+				padding: 0.5rem 1rem;
+				text-decoration: none;
+				margin: 4px 2px;
+				cursor: pointer;
+			}
 		}
 	}
 }
