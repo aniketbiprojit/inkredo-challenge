@@ -19,4 +19,30 @@
 		padding: 1.2rem 1rem;
 		cursor: pointer;
 	}
+	input[type='button'] {
+		background-color: #282c34;
+		border: none;
+		color: white;
+		padding: 0.5rem 1.5rem;
+		text-decoration: none;
+		margin: 4px 2px;
+		outline: none;
+		cursor: pointer;
+		border-radius: 20px;
+	}
+	input[type='button']:active {
+		outline: none;
+	}
+}
+
+.nav {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	align-items: center;
+
+	.nav-btn {
+		font-size: 1.2rem;
+		font-weight: 600;
+	}
 }

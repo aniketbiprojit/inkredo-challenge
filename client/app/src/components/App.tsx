@@ -9,6 +9,7 @@ import CreateCompany from './Auth/Create Company'
 import Axios from 'axios'
 import { options } from './config'
 import User from './User'
+import auth from './Auth/auth'
 
 interface elem {
 	_id: string
@@ -17,6 +18,7 @@ interface elem {
 
 interface AppState {
 	companies: Array<elem>
+	auth: boolean
 }
 
 interface PropsType extends RouteChildrenProps {}
@@ -31,9 +33,13 @@ class App extends Component<PropsType, AppState> {
 			{ company_name: 'Adobe', _id: 'e84012934' },
 			{ company_name: 'Apple', _id: 'e132123' },
 		],
+		auth: false,
 	}
 
 	async componentDidMount() {
+		if (await auth()) {
+			this.setState({ auth: true })
+		}
 		let result = await Axios.post(options.link + 'company/get_all')
 		this.setState({ companies: result.data })
 	}
@@ -59,10 +65,31 @@ class App extends Component<PropsType, AppState> {
 			<Fragment>
 				<div className='App Home'>
 					<div className='container'>
-						<Link to='/create/company'>
-							<input type='button' value='Create Company' />
-						</Link>
-						<input type='button' value='My Dashboard' />
+						<div className='nav'>
+							<Link to='/create/company'>
+								<input type='button' className='nav-btn' value='Create Company' />
+							</Link>
+							<Link to='/dashboard'>
+								<input type='button' className='nav-btn' value='My Dashboard' />
+							</Link>
+							{this.state.auth ? (
+								<Link to='/logout'>
+									<input
+										type='button'
+										className='nav-btn'
+										value='Logout'
+										onClick={() => {
+											localStorage.clear()
+											window.location.reload()
+										}}
+									/>
+								</Link>
+							) : (
+								<Link to='/login'>
+									<input type='button' className='nav-btn' value='Login' />
+								</Link>
+							)}
+						</div>
 						<h1>Companies</h1>
 						{this.state.companies.map((elem) => {
 							return (
