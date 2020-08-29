@@ -50,6 +50,26 @@ Make Chrome accept the signing authority .pem file
 
 ## Run Instructions
 
+### Add local.development.env
+```
+TEST_BOOL=true
+
+LOGGING=true
+PORT=8080
+
+SSL=true
+
+SSL_CRT_FILE=certificates/localhost.crt
+SSL_KEY_FILE=certificates/localhost.key
+
+DB_USER=username
+DB_PASS=password
+
+DB_HOST=cluster0-uszfy.mongodb.net
+
+DB_NAME=InkredoChallenge?retryWrites=true&w=majority
+```
+
 ### `npm install`
 
 ### `npm start`
