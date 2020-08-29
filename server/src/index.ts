@@ -137,4 +137,5 @@ class App extends AbstractApp {
 }
 
 const app = new App('Primary App')
+
 app.listen()

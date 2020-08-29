@@ -29,6 +29,8 @@ app.post('/company/get_all', async (req, res) => {
 	res.send(companies)
 })
 
+app.use('/company/', verify, require('./company.routes'))
+
 app.post('/company/:name', async (req, res) => {
 	// console.log(req.params)
 	const company = await Company.findOne({ company_name: req.params.name })
@@ -41,8 +43,6 @@ app.post('/company/:name', async (req, res) => {
 	}
 	res.send(response)
 })
-
-app.use('/company/', verify, require('./company.routes'))
 
 app.use('/relation', verify, require('./relation.routes'))
 

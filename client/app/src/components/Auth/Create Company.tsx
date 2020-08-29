@@ -33,6 +33,7 @@ class CreateCompany extends Component<ICreateCompanyProps, ICreateCompanyState> 
 				},
 			})
 			if (result.status === 200) {
+				// console.log(result)
 				this.props.history.push('/company/' + this.state.company_name, '/')
 			}
 		} catch (err) {

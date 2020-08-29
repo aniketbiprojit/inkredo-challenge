@@ -4,7 +4,7 @@
 		"module": "CommonJS",
 		"declaration": true,
 		"declarationMap": true,
-		"noEmit": true,
+		// "noEmit": true,
 		"jsx": "react",
 		"strict": true,
 		"pretty": true,
