@@ -57,3 +57,75 @@ src
 │   └── server.ts (mongoose connection)
 └── tsconfig.json
 ```
+
+## Routes
+
+### ./server/src/index.ts
+```
+[
+  Route {
+    path: '/inkredo-challenge*',
+    methods: { get: true }
+  }
+]
+```
+
+### ./server/src/routes/index.ts
+
+```
+[ Route { path: '/api',  methods: { get: true } } ]
+[
+  Route {
+    path: '/api/verify',
+    methods: { post: true }
+  },
+  Route {
+    path: '/api/company/get_all',
+    methods: { post: true }
+  },
+  Route {
+    path: '/api/company/:name',
+    methods: { post: true }
+  }
+]
+```
+
+### ./server/src/routes/user.routes.ts
+
+```
+[
+  Route {
+    path: '/api/user/register',
+    methods: { post: true }
+  },
+  Route { 
+    path: '/api/user/login',
+    methods: { post: true } 
+  },
+  Route {
+    path: '/api/user/dashboard',
+    methods: { post: true }
+  }
+]
+```
+
+### ./server/src/routes/company.routes.ts
+
+```
+[
+  Route {
+    path: '/api/company/create',
+    methods: { post: true }
+  }
+]
+```
+
+### ./server/src/routes/relation.routes.ts
+
+```
+[
+  Route { path: '/api/relation/join', 
+    methods: { post: true } 
+  },
+]
+```
