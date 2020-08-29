@@ -8,17 +8,35 @@ import https from 'https'
 import { Routes } from './routes/index'
 import Console from './helpers/Console'
 
+import dotenv, { config } from 'dotenv'
+
 // /'./models'
 require('./models')
 
+const isDevelopment = process.env.ENV === 'development'
+
+if (!isDevelopment) {
+	console.log(isDevelopment)
+	dotenv.config({ path: __dirname + '/../local.production.env' })
+	Console.log(process.env.somevar)
+}
+
+type TypeName<T> = T extends express.Application
+	? express.Application
+	: T extends express.IRouter
+	? express.IRouter
+	: object
+
 interface AppInterface {
-	app: express.Application
+	// app: TypeName<T>
+
 	port: string | number
 	name: string
 }
 
 abstract class AbstractApp implements AppInterface {
-	public app: express.Application
+	// app: express.Application extends express.IRouter ? express.IRouter : express.Application
+	app: any
 	public port: string | number
 	public name: string
 
@@ -31,7 +49,8 @@ abstract class AbstractApp implements AppInterface {
 	 * @param {number|string} port defaults to 8080 if not in env
 	 */
 	constructor(name: string = 'App', port: string | number = process.env.PORT || 8080) {
-		this.app = express()
+		if (isDevelopment) this.app = express()
+		else this.app = express.Router()
 		this.port = port
 
 		this.name = name
@@ -73,14 +92,22 @@ class App extends AbstractApp {
 			this.app.use(cors())
 		}
 		const path = require('path')
-		this.app.use('/inkredo-challenge', express.static(path.join(__dirname + '/../../client/app/build')))
-		this.app.get('/inkredo-challenge*', (req, res) => {
-			res.sendFile(path.join(__dirname + '/../../client/app/build/index.html'))
-		})
+		if (isDevelopment) {
+			this.app.use('/inkredo-challenge', express.static(path.join(__dirname + '/../../client/app/build')))
+			this.app.get('/inkredo-challenge*', (req: express.Request, res: express.Response) => {
+				res.sendFile(path.join(__dirname + '/../../client/app/build/index.html'))
+			})
+		} else {
+			this.app.get('/hello', (req: express.Request, res: express.Response) => res.send('d'))
+			this.app.use('/', express.static(path.join(__dirname + '/../../client/app/build')))
+			this.app.get('/*', (req: express.Request, res: express.Response) => {
+				res.sendFile(path.join(__dirname + '/../../client/app/build/index.html'))
+			})
+		}
 	}
 
 	protected connectRoutes(): void {
-		this.app.get('/api', (req, res) => res.send('ok'))
+		this.app.get('/api', (req: express.Request, res: express.Response) => res.send('ok'))
 		this.app.use('/api', Routes)
 	}
 
@@ -91,51 +118,57 @@ class App extends AbstractApp {
 	 * THen decides whether to implement SSL or not.
 	 */
 	public listen(): void {
-		if (this.check_ssl) {
-			if (this.local) {
-				const certificate = fs.readFileSync(process.env.SSL_CRT_FILE as string)
-				const privateKey = fs.readFileSync(process.env.SSL_KEY_FILE as string)
+		if (isDevelopment) {
+			if (this.check_ssl) {
+				if (this.local) {
+					const certificate = fs.readFileSync(process.env.SSL_CRT_FILE as string)
+					const privateKey = fs.readFileSync(process.env.SSL_KEY_FILE as string)
 
-				const credentials = { key: privateKey, cert: certificate }
+					const credentials = { key: privateKey, cert: certificate }
 
-				let httpsServer = https.createServer(credentials, this.app).listen(8443)
+					let httpsServer = https.createServer(credentials, this.app).listen(8443)
 
-				let httpServer = http
-					.createServer((req, res) => {
-						let host = req.headers['host']
-						res.writeHead(301, { Location: 'https://' + host + req.url })
-						res.end()
-					})
-					.listen(8000)
+					let httpServer = http
+						.createServer((req, res) => {
+							let host = req.headers['host']
+							res.writeHead(301, { Location: 'https://' + host + req.url })
+							res.end()
+						})
+						.listen(8000)
 
-				let netServer = net
-					.createServer((conn) => {
-						conn.once('data', (buf) => {
-							let address: string = buf[0] === 22 ? '8443' : '8000'
+					let netServer = net
+						.createServer((conn) => {
+							conn.once('data', (buf) => {
+								let address: string = buf[0] === 22 ? '8443' : '8000'
 
-							let proxy = net.createConnection(address, function () {
-								proxy.write(buf)
-								conn.pipe(proxy).pipe(conn)
+								let proxy = net.createConnection(address, function () {
+									proxy.write(buf)
+									conn.pipe(proxy).pipe(conn)
+								})
 							})
 						})
-					})
-					.listen(this.port, () =>
-						Console.log(`${this.name} Running on port https://localhost:${this.port}.`)
-					)
+						.listen(this.port, () =>
+							Console.log(`${this.name} Running on port https://localhost:${this.port}.`)
+						)
 
-				process.on('SIGUSR2', () => {
-					Console.error('Process Exit\n')
-					httpServer.close(() => {
-						process.kill(process.pid, 'SIGINT')
+					process.on('SIGUSR2', () => {
+						Console.error('Process Exit\n')
+						httpServer.close(() => {
+							process.kill(process.pid, 'SIGINT')
+						})
 					})
-				})
+				}
+			} else {
+				this.app.listen(this.port, () => Console.log(`${this.name} Listening on port ${this.port}.`))
 			}
-		} else {
-			this.app.listen(this.port, () => Console.log(`${this.name} Listening on port ${this.port}.`))
 		}
 	}
 }
 
 const app = new App('Primary App')
 
-app.listen()
+if (isDevelopment) {
+	app.listen()
+}
+
+module.exports = app
