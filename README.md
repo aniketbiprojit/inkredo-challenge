@@ -11,6 +11,8 @@
 
 ## React Structure
 
+### ./client/app/src
+
 ```
 src
 │   ├── assets
@@ -30,4 +32,28 @@ src
 │   │   └── User.jsx (user dashboard)
 │   ├── index.css (base css)
 └── └──index.tsx (entry file. calls ./components/App.jsx)
+```
+
+
+## Express Structure
+
+### ./client/server/src
+
+```
+├── src
+│   ├── helpers
+│   │   └── Console.ts (console logging helper -> colors)
+│   ├── index.ts (entry file contains class App)
+│   ├── models
+│   │   ├── company.model.js (model for company)
+│   │   ├── index.ts (easy exports)
+│   │   ├── relation.model.js ( user <===> company )
+│   │   └── user.model.js (model for user)
+│   ├── routes
+│   │   ├── company.routes.ts (/company)
+│   │   ├── index.ts (routes export and verify middleware)
+│   │   ├── relation.routes.ts (/relation)
+│   │   └── user.routes.ts (/user)
+│   └── server.ts (mongoose connection)
+└── tsconfig.json
 ```
