@@ -36,7 +36,7 @@ class Register extends Component<IRegisterProps, IRegisterState> {
 				},
 			})
 			if (result.status === 200) {
-				console.log(result)
+				// console.log(result)
 				this.props.history.push('/login', 'login')
 			}
 		} catch (err) {

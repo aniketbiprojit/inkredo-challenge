@@ -8,7 +8,7 @@ const app = express.Router()
 app.use('/user', require('./user.routes'))
 
 let verify = async (req: express.Request, res: express.Response, next: any) => {
-	console.log(req.body)
+	// console.log(req.body)
 	try {
 		if (req.body.auth && req.body.auth.token && req.body.auth.username) {
 			if (jwt.decode(req.body.auth.token, 'secret').username === req.body.auth.username) next()
@@ -30,7 +30,7 @@ app.post('/company/get_all', async (req, res) => {
 })
 
 app.post('/company/:name', async (req, res) => {
-	console.log(req.params)
+	// console.log(req.params)
 	const company = await Company.findOne({ company_name: req.params.name })
 
 	const present = await Relation.find({ present: true, company: company }, '_id').populate('user')

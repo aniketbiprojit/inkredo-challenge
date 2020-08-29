@@ -8,7 +8,7 @@ const jwt = require('jsonwebtoken')
 const app = express.Router()
 
 app.post('/register', async (req, res) => {
-	console.log(req.body)
+	// console.log(req.body)
 	// console.log(await bcrypt.hash('req.body.password', 10))
 	// return
 	try {
@@ -25,7 +25,7 @@ app.post('/register', async (req, res) => {
 				req.body.user.password = await bcrypt.hash(req.body.user.password, 10)
 				let user = new User(req.body.user)
 				await user.save()
-				console.log(user)
+				// console.log(user)
 				user.password = ''
 				res.send(user)
 			} else {

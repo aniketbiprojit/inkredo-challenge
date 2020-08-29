@@ -11,7 +11,7 @@ app.post('/create', async (req: express.Request, res: express.Response) => {
 			let company = new Company({ company_name: req.body.company_name })
 			company.created_by = user._id
 			await company.save()
-			console.log(company)
+			// console.log(company)
 			res.send()
 		} else {
 			res.status(422).send('Company name missing,')

@@ -17,7 +17,7 @@ export default class User extends Component {
 				},
 			})
 			if (result.status === 200) {
-				console.log(result.data.past)
+				// console.log(result.data.past)
 				this.setState({ past: result.data.past, present: result.data.present[0].company.company_name })
 			}
 		} catch (err) {

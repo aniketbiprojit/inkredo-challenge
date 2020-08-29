@@ -36,7 +36,7 @@ export default class Company extends React.Component<ICompanyProps, ICompanyStat
 				present.push(element.user.username)
 			}
 
-			this.setState({ past: past, present: present }, () => console.log(this.state))
+			this.setState({ past: past, present: present })
 		})
 	}
 
