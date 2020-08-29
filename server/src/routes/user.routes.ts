@@ -1,7 +1,7 @@
 import express from 'express'
 import bcrypt, { compareSync } from 'bcrypt'
 
-const { User, Company } = require('../models')
+const { User, Company, Relation } = require('../models')
 
 const jwt = require('jsonwebtoken')
 
@@ -75,6 +75,14 @@ app.post('/login', async (req, res) => {
 		if (err) console.error(err)
 		res.status(500).send('Internal Server Error')
 	}
+})
+
+app.post('/dashboard', async (req, res) => {
+	const user = await User.findOne({ username: req.body.auth.username })
+	const present = await Relation.find({ user: user._id, present: true }).populate('company')
+	const past = await Relation.find({ user: user._id, present: false }).populate('company')
+
+	res.send({ past: past, present: present })
 })
 
 module.exports = app

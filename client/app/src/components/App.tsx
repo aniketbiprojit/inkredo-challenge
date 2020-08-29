@@ -8,6 +8,7 @@ import Company from './Company'
 import CreateCompany from './Auth/Create Company'
 import Axios from 'axios'
 import { options } from './config'
+import User from './User'
 
 interface elem {
 	_id: string
@@ -38,15 +39,19 @@ class App extends Component<PropsType, AppState> {
 	}
 
 	async join(company_name: string) {
-		let result = await Axios.post(options.link + 'relation/join', {
-			company_name: company_name,
-			auth: {
-				token: localStorage.getItem('token'),
-				username: localStorage.getItem('username'),
-			},
-		})
-		if (result.status === 200) {
-			alert('joined')
+		try {
+			let result = await Axios.post(options.link + 'relation/join', {
+				company_name: company_name,
+				auth: {
+					token: localStorage.getItem('token'),
+					username: localStorage.getItem('username'),
+				},
+			})
+			if (result.status === 200) {
+				alert('joined')
+			}
+		} catch (err) {
+			alert('Please login')
 		}
 	}
 	render() {
@@ -92,6 +97,7 @@ class RouterWrapper extends Component {
 						<Route path='/company/:id' component={Company}></Route>
 						<Route path='/register' component={Register}></Route>
 						<Route path='/login' component={Login}></Route>
+						<Route path='/dashboard' component={User}></Route>
 						<Route path='/' exact component={App}></Route>
 					</Switch>
 				</Router>
